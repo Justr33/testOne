@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        NODE_ENV = "production"
+    }
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                echo 'Installing Node.js dependencies...'
+                sh 'npm install'
+            }
+        }
+
+        stage('Run JavaScript Script') {
+            steps {
+                echo 'Running main.js script...'
+                sh 'node scripts/main.js'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                sh 'npm test'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building project...'
+                sh 'npm run build'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+    }
+}
